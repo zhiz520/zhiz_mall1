@@ -16,9 +16,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from utils.converters import UsernameConverter
+from django.urls import register_converter
+
+from apps.users.views import UsernameCountView
+
+register_converter(UsernameConverter, 'username')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.users.urls')),
+    # path('username/<username:username>/count/', UsernameCountView.as_view())
     
 ]
