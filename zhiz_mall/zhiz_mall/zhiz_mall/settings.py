@@ -194,3 +194,7 @@ LOGGING = {
         },
     }
 }
+
+
+# Replace the system's user class with a new one
+AUTH_USER_MODEL = 'users.User'
