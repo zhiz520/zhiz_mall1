@@ -3,5 +3,5 @@ from django.urls import path
 
 
 urlpatterns = [
-    path('username/<username:UsernameConverter>/count/', UsernameCountView.as_view())
+    path('usernames/<username:UsernameConverter>/count/', UsernameCountView.as_view())
 ]
