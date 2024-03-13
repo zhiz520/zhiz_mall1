@@ -204,9 +204,9 @@ AUTH_USER_MODEL = 'users.User'
 
 #Cors Whitelist
 CORS_ORIGIN_WHITELIST = (
-    'localhost:8080',
-    '127.0.0.1:8080',
-    'WWW.zhiz.mall:8080',
+    'http://localhost:8080',
+    'http://127.0.0.1:8080',
+    'http://WWW.zhiz.mall:8080',
 
 )
 
