@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 from apps.users.models import User
+from django.contrib.auth import login
 
 # Create your views here.
 # Determine if user name is duplicated
@@ -47,6 +48,7 @@ class RegisterView(View):
         # user.save()
         user = User.objects.create_user(username=username, password=password, mobile=mobile)
         print(user)
+        login(request, user)
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
             
 
