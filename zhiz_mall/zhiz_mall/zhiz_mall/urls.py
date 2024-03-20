@@ -27,5 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.users.urls')),
     # path('username/<username:username>/count/', UsernameCountView.as_view())
+    path('', include('apps.verifications.urls'))
     
 ]

@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-_ee((66adk@7ojpmy(!b4s*u_iiz=*r5n$9kp5twc12^1tfz-k
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.zhiz.mall']
+ALLOWED_HOSTS = ['127.0.0.1', 'localhost', 'www.zhiz.mall', 'www.meiduo.site']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'apps.users',
     'corsheaders',
+    'apps.verifications'
 ]
 
 MIDDLEWARE = [
@@ -207,8 +208,16 @@ CORS_ORIGIN_WHITELIST = (
     'http://localhost:8080',
     'http://127.0.0.1:8080',
     'http://WWW.zhiz.mall:8080',
+    'http://www.meiduo.site:8080',
 
 )
 
 # Allow cookies to be carried
 CORS_ALLOW_CREDENTIALS = True
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/stable/howto/static-files/
+# STATIC_URL = '/static/'
+# STATICFILES_DIRS = [
+#     BASE_DIR / "static",
+# ]
