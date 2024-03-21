@@ -5,6 +5,8 @@ from QQLoginTool.QQtool import OAuthQQ
 from zhiz_mall import settings
 from apps.oauth.models import OAuthQQUser
 from django.contrib.auth import login
+import json
+from apps.users.models import User
 
 # Create your views here.
 class QQLoginView(View):
@@ -49,5 +51,32 @@ class OauthQQView(View):
             response = JsonResponse({'cdoe': 0, 'errmsg': 'ok'})
             response.set_cookie('username', qquser.user.username)
             return response
+        
+    def post(self, request):
+        data = json.loads(request.body.decode())
+        mobile = data.get('mobile')
+        password = data.get('password')
+        sms_code = data.get('sms_code')
+        openid = data.get('access_token')
+
+        try:
+            user = User.objects.get(mobile=mobile)
+        except User.DoesNotExist:
+            user = User.objects.create_user(username=mobile, mobile=mobile, password=password)
+        else:
+            if user.check_password():
+                return JsonResponse({'code': 400, 'errmsg': 'Incomplete parameters'})
+        OAuthQQUser.objects.creat(user=user, openid=openid)
+
+        login(request, user)
+        
+        response = JsonResponse({'code': 0, 'errmsg': 'ok'})
+        response.set_cookie('username', user.username)
+        return response
+
+
+
+        
+
 
 
