@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 from apps.users.models import User
-from django.contrib.auth import login
+from django.contrib.auth import login, authenticate
 
 # Create your views here.
 # Determine if user name is duplicated
@@ -52,3 +52,35 @@ class RegisterView(View):
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
             
 
+# setting up processing logic for logging in
+class LoginView(View):
+
+    def post(self, request):
+        # receive data
+        data = json.loads(request.body.decode())
+        username = data.get('username')
+        password = data.get('password')
+        remembered = data.get('remembered')
+
+        # verification data
+        if not all([username, password]):
+            return JsonResponse({'code': 400, 'errmsg': '参数不全'})
+        
+        # verfication username and password
+        user = authenticate(username=username, password=password)
+        if user is None:
+            return JsonResponse({'code': 400, 'errmsg': '用户名或者密码错误'})
+        
+        # stay logged in
+        login(request, user)
+
+        # Duration or state retention
+        if remembered is None:
+            request.session.set_expiry(None)
+        else:
+            request.session.set_expiry(0)
+
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
+        
+
+        
