@@ -1,3 +1,4 @@
+from inspect import modulesbyfile
 import json
 import re
 from django.http import JsonResponse
@@ -65,6 +66,11 @@ class LoginView(View):
         # verification data
         if not all([username, password]):
             return JsonResponse({'code': 400, 'errmsg': '参数不全'})
+        
+        if re.match(r'1[3-9]\d{9}', username):
+            User.USERNAME_FIELD = 'mobile'
+        else:
+            User.USERNAME_FIELD = 'username'
         
         # verfication username and password
         user = authenticate(username=username, password=password)
