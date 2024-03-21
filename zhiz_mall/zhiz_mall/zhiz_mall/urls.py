@@ -19,14 +19,15 @@ from django.urls import path, include
 from utils.converters import UsernameConverter
 from django.urls import register_converter
 
-from apps.users.views import UsernameCountView
-
+# 404 路由不匹配
+# 405 方法不被允许
 register_converter(UsernameConverter, 'username')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('apps.users.urls')),
     # path('username/<username:username>/count/', UsernameCountView.as_view())
-    path('', include('apps.verifications.urls'))
+    path('', include('apps.verifications.urls')),
+    path('', include('apps.oauth.urls'),)
     
 ]
