@@ -6,6 +6,7 @@ from django.shortcuts import render
 from django.views import View
 from apps.users.models import User
 from django.contrib.auth import login, authenticate, logout
+from utils.views1 import LoginRequiredJsonMixin
 
 # Create your views here.
 # Determine if user name is duplicated
@@ -102,3 +103,10 @@ class LoguotView(View):
         response = JsonResponse({'code': 0, 'errmsg': 'ok'})
         response.delete_cookie('username')
         return response
+
+
+# User not logged in returns json data
+class CenterView(LoginRequiredJsonMixin, View):
+
+    def get(self, request):
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
