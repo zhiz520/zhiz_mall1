@@ -5,7 +5,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from django.views import View
 from apps.users.models import User
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 
 # Create your views here.
 # Determine if user name is duplicated
@@ -93,4 +93,12 @@ class LoginView(View):
         return response
         
 
-        
+class LoguotView(View):
+
+    def delete(self, request):
+        # deleting session infomation
+        logout(request)
+        # deletiong cookie infomation, because the previous section determines whather a user in logged in or not based on the cookie infomation
+        response = JsonResponse({'code': 0, 'errmsg': 'ok'})
+        response.delete_cookie('username')
+        return response
