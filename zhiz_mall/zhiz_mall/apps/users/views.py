@@ -117,3 +117,20 @@ class CenterView(LoginRequiredJsonMixin, View):
             'email_active': request.user.email_active,
         }
         return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': info_data})
+    
+
+class EmailView(LoginRequiredJsonMixin, View):
+
+    def put(self, request):
+        # 1.get data
+        data = json.loads(request.body.decode())
+        email = data.get('email')
+
+        # 2, save e-mail address, request.user 是登陆用户的实例对象
+        user = request.user
+        user.email = email
+        user.save()
+
+        return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+
