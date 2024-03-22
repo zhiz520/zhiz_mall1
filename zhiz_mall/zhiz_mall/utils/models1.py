@@ -8,6 +8,5 @@ class BaseModel(models.Model):
     update_time = models.DateField(auto_now=True, verbose_name='更新时间')
     
     class Meta:
-        abstarct = True # 说明是抽象类， 模型迁移时不会创建BaseModel表
+        abstract = True # 说明是抽象类， 模型迁移时不会创建BaseModel表
 
-# print(secrets.token_hex(32))

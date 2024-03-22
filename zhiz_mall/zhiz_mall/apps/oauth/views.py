@@ -61,6 +61,8 @@ class OauthQQView(View):
         password = data.get('password')
         sms_code = data.get('sms_code')
         openid = generate_decrypt(data.get('access_token'))
+        if openid is None:
+            return JsonResponse({'code': 400, 'errmsg': 'Incomplete parameters'})
 
         try:
             user = User.objects.get(mobile=mobile)
