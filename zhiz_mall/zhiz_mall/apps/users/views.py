@@ -109,4 +109,11 @@ class LoguotView(View):
 class CenterView(LoginRequiredJsonMixin, View):
 
     def get(self, request):
-        return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+        info_data = {
+            'username': request.user.username,
+            'mobile': request.user.mobile,
+            'email': request.user.email,
+            'email_active': request.user.email_active,
+        }
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'info_data': info_data})
