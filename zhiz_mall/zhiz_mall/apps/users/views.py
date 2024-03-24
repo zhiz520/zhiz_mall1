@@ -4,7 +4,7 @@ import re
 from django.http import JsonResponse, SimpleCookie
 from django.shortcuts import redirect, render
 from django.views import View
-from apps.users.models import User
+from apps.users.models import User, Address
 from django.contrib.auth import login, authenticate, logout
 from utils.views1 import LoginRequiredJsonMixin
 from django.core.mail import send_mail
@@ -12,6 +12,7 @@ from django.core.mail import send_mail
 from utils.crypt1 import generate_encrypt, generate_decrypt
 
 from celery_tasks1.email.tasks import send_mail_celery
+
 # Create your views here.
 # Determine if user name is duplicated
 class UsernameCountView(View):
@@ -178,5 +179,53 @@ class EmailVerifyView(View):
         return JsonResponse({'cdoe': 0, 'errmsg': 'ok'})
         
         
+
+# 收货地址
+class AddressCreateView(LoginRequiredJsonMixin, View):
+
+    def post(self, request):
+        # 1.get data
+        data = json.loads(request.body.decode())
+        receiver = data.get('receiver')
+        province_id = data.get('province_id')
+        city_id = data.get('city_id')
+        district_id = data.get('district_id')
+        place = data.get('place')
+        mobile = data.get('mobile')
+        tel = data.get('tel')
+        email = data.get('email')
+
+        user = request.user
+        # 2.验证必穿参数
+        # if not all([receiver, ])
+
+        # 3.参数入库
+        address = Address.objects.create(
+            user=user,
+            title=receiver,
+            receiver=receiver,
+            province=province_id,
+            city_id=city_id,
+            district_id = district_id,
+            place = place,
+            mobile = mobile,
+            tel = tel,
+            email = email
+        )
+
+        # 4.返回响应
+        address_dict = {
+            'id': address.id,
+            'title': address.title,
+            'receiver': address.receiver,
+            'province': address.province,
+            'city': address.city,
+            'district': address.district,
+            'place': address.place,
+            'mobile': address.mobile,
+            'tel': address.tel,
+            'email': address.email
+        }
+        return JsonResponse({'code': 0, 'errmsg': 'ok', 'address': address_dict})
 
 
