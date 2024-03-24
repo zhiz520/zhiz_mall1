@@ -9,7 +9,7 @@ def generate_encrypt(openid, key=key):
     # 实例化Fernet
     pher_suite = Fernet(key)
     # 加密
-    encrypt_openid = pher_suite.encrypt(openid.encode())
+    encrypt_openid = pher_suite.encrypt(str(openid).encode())
     return encrypt_openid.decode()
 
 

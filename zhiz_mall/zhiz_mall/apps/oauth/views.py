@@ -18,7 +18,7 @@ class QQLoginView(View):
         oauth = OAuthQQ(
             client_id=settings.QQ_CLIENT_ID,
             client_secret=settings.QQ_CLIENT_SECRET,
-            redirect_url=settings.QQ_REDIRECT_URL,
+            redirect_uri=settings.QQ_REDIRECT_URI,
             state='xxx'
         )
         qq_login_url = oauth.get_qq_url()

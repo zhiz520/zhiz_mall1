@@ -234,11 +234,14 @@ QQ_REDIRECT_URI = 'http://127.0.0.1:8080/oauth_callback.html'
 SECRET_KEY = '053866b47e6447ca03c58c675323e7cd46a8f5014499f2a14fc610e936015407'
 
 # 邮箱配置
-ENAIL_BACKEND = 'django.core.mail.backends.stmp.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.qq.com'
-EMAIL_PORT = 25
+EMAIL_PORT = 465
+EMAIL_USE_SLL = True
 
 EMAIL_HOST_USER = '3143433179@qq.com'
-WMAIL_HOST_PASSWORD = 'zxwlvjyqvqvqbhid'
+EMAIL_HOST_PASSWORD = 'vgeeqaqkdpsgdfch'
 
 EMAIL_FROM = '枝枝大宝贝<3143433179@qq.com>'
+
+
