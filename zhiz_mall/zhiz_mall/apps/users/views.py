@@ -11,6 +11,7 @@ from django.core.mail import send_mail
 
 from utils.crypt1 import generate_encrypt, generate_decrypt
 
+from celery_tasks1.email.tasks import send_mail_celery
 # Create your views here.
 # Determine if user name is duplicated
 class UsernameCountView(View):
@@ -142,13 +143,40 @@ class EmailView(LoginRequiredJsonMixin, View):
 
         # 3.send verification email
         token = generate_encrypt(request.user.id)
-        send_mail(subject='bangdingyouxiang', 
-                  message='zhizhi', 
-                  from_email='3143433179@qq.com', 
-                  recipient_list=[email],
-                  html_message='点击按钮进行激活<a href="http://www.meisuo.site/?token={}>激活</a>'.format(token),
-                  )
-
+        # send_mail(subject='bangdingyouxiang', 
+        #           message='zhizhi', 
+        #           from_email='3143433179@qq.com', 
+        #           recipient_list=[email],
+        #           html_message='点击按钮进行激活<a href="http://www.meisuo.site/?token={}>激活</a>'.format(token),
+        #           )
+        send_mail_celery.delay(
+            subject='bangdingyouxiang', 
+            message='zhizhi', 
+            from_email='3143433179@qq.com', 
+            recipient_list=[email],
+            html_message='点击按钮进行激活<a href="http://www.meisuo.site/?token={}>激活</a>'.format(token),
+        )
+  
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
+
+
+class EmailVerifyView(View):
+
+    def put(self, request):
+        params = request.GET
+        token = params.get('token')
+        if token is None:
+            return JsonResponse({'code': 400, 'errmsg': 'Incomplete parameters'})
+        user_id = generate_decrypt(token)
+        if user_id is None:
+            return JsonResponse({'code': 400, 'errmsg': 'Incomplete parameters'})
+        
+        user = User.objects.get(id=user_id)
+        user.email_active = True
+        user.seve()
+
+        return JsonResponse({'cdoe': 0, 'errmsg': 'ok'})
+        
+        
 
 

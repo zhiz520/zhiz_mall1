@@ -13,6 +13,6 @@ app.config_from_object('celery_tasks1.config')
 
 
 # 4.设置celery自动检测任务包
-app.autodiscover_tasks('celery_tasks1.tasks')
+app.autodiscover_tasks(['celery_tasks1.sms', 'celery_tasks1.email'])
 
 # 使用celery -A celery_tasks1.main worker -l INFO   启动celery
