@@ -9,6 +9,8 @@ from django.contrib.auth import login, authenticate, logout
 from utils.views1 import LoginRequiredJsonMixin
 from django.core.mail import send_mail
 
+from utils.crypt1 import generate_encrypt, generate_decrypt
+
 # Create your views here.
 # Determine if user name is duplicated
 class UsernameCountView(View):
@@ -139,7 +141,13 @@ class EmailView(LoginRequiredJsonMixin, View):
         user.save()
 
         # 3.send verification email
-        send_mail(subject='bangdingyouxiang', message='zhizhi', from_email='3143433179@qq.com', recipient_list=[email])-
+        token = generate_encrypt(request.user.id)
+        send_mail(subject='bangdingyouxiang', 
+                  message='zhizhi', 
+                  from_email='3143433179@qq.com', 
+                  recipient_list=[email],
+                  html_message='点击按钮进行激活<a href="http://www.meisuo.site/?token={}>激活</a>'.format(token),
+                  )
 
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
 
