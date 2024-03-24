@@ -5,7 +5,7 @@ from django.views import View
 from libs.captcha.captcha import captcha
 from django_redis import get_redis_connection
 
-from libs.yuntongxun.sms import CCP
+
 from celery_tasks1.sms.tasks import celery_send_sms_code
 
 # Create your views here.
@@ -18,7 +18,7 @@ class ImageCodeView(View):
         # link to redis server
         redis_cli = get_redis_connection('code')
         # Storing CAPTCHA and UUID to redis database
-        redis_cli.setex(uuid, 100, text)
+        redis_cli.setex(uuid, 200, text)
         # return the image binary
         return HttpResponse(image, content_type='image/jpeg')
 
@@ -39,6 +39,7 @@ class SmsCodeView(View):
         if redis_image_code is None:
             return JsonResponse({'code': 400, 'errmsg': 'image code expired'})
         if redis_image_code.decode().lower() != image_code.lower():
+
             return JsonResponse({'code': 400, 'errmsg': 'image code err'})
         # verify that the token exists
         send_flag = redis_cli.get('send_flag_{}'.format(mobile))

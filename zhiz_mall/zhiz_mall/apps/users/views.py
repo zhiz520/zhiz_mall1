@@ -1,12 +1,13 @@
 from inspect import modulesbyfile
 import json
 import re
-from django.http import JsonResponse
-from django.shortcuts import render
+from django.http import JsonResponse, SimpleCookie
+from django.shortcuts import redirect, render
 from django.views import View
 from apps.users.models import User
 from django.contrib.auth import login, authenticate, logout
 from utils.views1 import LoginRequiredJsonMixin
+from django.core.mail import send_mail
 
 # Create your views here.
 # Determine if user name is duplicated
@@ -58,6 +59,7 @@ class RegisterView(View):
 class LoginView(View):
 
     def post(self, request):
+        
         # receive data
         data = json.loads(request.body.decode())
         username = data.get('username')
@@ -79,7 +81,9 @@ class LoginView(View):
             return JsonResponse({'code': 400, 'errmsg': '用户名或者密码错误'})
         
         # stay logged in
-        login(request, user)
+        else:
+            login(request, user)
+            print(request.user.is_authenticated)
 
         # Duration or state retention
         if remembered is None:
@@ -89,7 +93,10 @@ class LoginView(View):
 
         response = JsonResponse({'code': 0, 'errmsg': 'ok'})
         # setting cookie infomation to display user infomation
-        response.set_cookie('username', username)
+        try:
+            response.set_cookie('username', username, path='/')
+        except Exception as e:
+            print('出现错误：' , e)
 
         return response
         
@@ -130,6 +137,9 @@ class EmailView(LoginRequiredJsonMixin, View):
         user = request.user
         user.email = email
         user.save()
+
+        # 3.send verification email
+        send_mail(subject='bangdingyouxiang', message='zhizhi', from_email='3143433179@qq.com', recipient_list=[email])-
 
         return JsonResponse({'code': 0, 'errmsg': 'ok'})
 

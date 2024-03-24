@@ -44,7 +44,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+
 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -53,6 +53,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
 
 ROOT_URLCONF = 'zhiz_mall.urls'
@@ -230,3 +231,13 @@ QQ_REDIRECT_URI = 'http://127.0.0.1:8080/oauth_callback.html'
 
 # 加密密匙
 SECRET_KEY = '053866b47e6447ca03c58c675323e7cd46a8f5014499f2a14fc610e936015407'
+
+# 邮箱配置
+ENAIL_BACKEND = 'django.core.mail.backends.stmp.EmailBackend'
+EMAIL_HOST = 'smtp.qq.com'
+EMAIL_PORT = 25
+
+EMAIL_HOST_USER = '3143433179@qq.com'
+WMAIL_HOST_PASSWORD = 'zxwlvjyqvqvqbhid'
+
+EMAIL_FROM = '枝枝大宝贝<3143433179@qq.com>'
