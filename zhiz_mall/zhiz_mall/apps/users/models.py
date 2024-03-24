@@ -6,7 +6,7 @@ from utils.models1 import BaseModel
 class User(AbstractUser):
     mobile = models.CharField(max_length=11, unique=True, verbose_name='手机号')
     email_active = models.BooleanField(default=False, verbose_name='邮箱验证状态')
-    default_address = models.ForeignKey('Address', related_name='user', null=True, blank=True, on_delete=models.SET_NULL, verbose_name='默认地址')
+    default_address = models.ForeignKey('Address', related_name='default_address', null=True, blank=True, on_delete=models.SET_NULL, verbose_name='默认地址')
 
     groups = models.ManyToManyField('auth.Group', related_name='user_set')
     user_permissions = models.ManyToManyField('auth.Permission', related_name='user_set')
